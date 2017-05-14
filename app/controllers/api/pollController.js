@@ -22,7 +22,6 @@ module.exports.create = (req, res, next) => {
             res.status(400);
             res.json('failed to create a poll');
         });
-
 };
 
 module.exports.getLatest = (req, res, next) => {

@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 const mongoose = require('mongoose');
+mongoose.Promise = Promise;
 const async = require('async');
 
 const routes = require('./app/routes');
@@ -18,8 +19,14 @@ async.series([
     let mongoDB = 'localhost';
     let db = mongoose.connection;
 
-    mongoose.connect(mongoDB, callback);
-    db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+    let connect = mongoose.connect(mongoDB);
+
+    connect
+      .then(() => { callback(); })
+      .catch((error) => {
+        console.error(error.message);
+        process.abort();
+      });
   },
   (callback) => {
     // express setup
