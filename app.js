@@ -7,6 +7,8 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+const routes = require('./app/routes');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'hbs');
@@ -20,7 +22,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // app routes
-require('./app/routes')(app);
+app.use(routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

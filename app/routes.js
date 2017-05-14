@@ -1,6 +1,6 @@
 const express = require('express');
+let router = express.Router();
 
-module.exports = (app) => {
-    app.get('/', function (req, res, next) { res.render('index', { title: 'Express' }); });
-    app.get('/test', (req, res, next) => { res.write('ASDF'); });
-}
+router.get('/', function (req, res, next) { res.render('index', { title: 'Express' }); });
+
+module.exports = router;
