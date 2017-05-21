@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const router = require('express').Router();
 const Poll = require('../../models/poll');
 
@@ -26,6 +27,43 @@ router.post('/api/poll', (req, res) => {
         });
 });
 
+router.put('/api/poll/:pollId/vote/:optionId', (req, res) => {
+    let pollId = req.param('pollId');
+    let optionId = req.param('optionId');
+
+    if (mongoose.Types.ObjectId.isValid(pollId) === false) {
+        res.status(400);
+        res.send('pollId parameter is invalid');
+        return;
+    }
+
+    if (mongoose.Types.ObjectId.isValid(optionId) === false) {
+        res.status(400);
+        res.send('optionId parameter is invalid');
+        return;
+    }
+
+    Poll.findById(pollId).exec()
+        .then(poll => {
+            if (!poll) {
+                res.status(404);
+                res.send();
+                return Promise.resolve();
+            }
+
+            let option = poll.options.find((val) => val._id == optionId);
+            option.votes += 1;
+
+            return Poll.update({ _id: pollId }, poll);
+        }).then(result => {
+            res.status(204);
+            res.send();
+        }).catch(err => {
+            res.status(400);
+            res.send();
+        });
+});
+
 router.get('/api/poll', (req, res) => {
     let findPoll = Poll.find()
         .sort({ created: 'desc' })
@@ -39,7 +77,13 @@ router.get('/api/poll', (req, res) => {
 });
 
 router.get('/api/poll/:pollId', (req, res) => {
-    let id = req.params.pollID;
+    let id = req.param('pollId');
+
+    if (mongoose.Types.ObjectId.isValid(pollId) === false) {
+        res.status(400);
+        res.send('pollId parameter is invalid');
+        return;
+    }
 
     let findPoll = Poll.findById(id).exec();
 
