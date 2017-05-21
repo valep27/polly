@@ -9,7 +9,7 @@ var PollSchema = new Schema({
             name: { type: String, trim: true, minlength: 1, required: true },
             votes: { type: Number, min: 0, default: 0 }
         }],
-        validate: (arr) => arr.length > 1,
+        validate: arr => arr.length > 1,
         required: true
     },
 });

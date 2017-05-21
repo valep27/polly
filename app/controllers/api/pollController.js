@@ -17,11 +17,11 @@ router.post('/api/poll', (req, res) => {
     }]);
 
     createPoll
-        .then((result) => {
+        .then(result => {
             res.status(201);
             res.json(result[0]._id);
         })
-        .catch((err) => {
+        .catch(err => {
             res.status(400);
             res.json('failed to create a poll');
         });
@@ -51,7 +51,7 @@ router.put('/api/poll/:pollId/vote/:optionId', (req, res) => {
                 return Promise.resolve();
             }
 
-            let option = poll.options.find((val) => val._id == optionId);
+            let option = poll.options.find(val => val._id == optionId);
             option.votes += 1;
 
             return Poll.update({ _id: pollId }, poll);
@@ -71,7 +71,7 @@ router.get('/api/poll', (req, res) => {
         .exec();
 
     findPoll
-        .then((result) => {
+        .then(result => {
             res.json(result);
         });
 });
@@ -87,7 +87,7 @@ router.get('/api/poll/:pollId', (req, res) => {
 
     let findPoll = Poll.findById(id).exec();
 
-    findPoll.then((result) => {
+    findPoll.then(result => {
         if (result) {
             res.json(result);
         } else {

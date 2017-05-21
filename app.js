@@ -14,7 +14,7 @@ const routes = require('./app/routes');
 
 
 async.series([
-  (callback) => {
+  callback => {
     //Set up mongoose connection
     let mongoDB = 'localhost';
     let db = mongoose.connection;
@@ -28,7 +28,7 @@ async.series([
         process.abort();
       });
   },
-  (callback) => {
+  callback => {
     // express setup
     app.set('views', path.join(__dirname, 'app/views'));
     app.set('view engine', 'hbs');
@@ -40,9 +40,10 @@ async.series([
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
     app.use(express.static(path.join(__dirname, 'public')));
-    callback(null, null);
+
+    callback();
   },
-  (callback) => {
+  callback => {
     // setup routes
     app.use(routes);
 
@@ -63,7 +64,7 @@ async.series([
       res.render('error');
     });
 
-    callback(null, null);
+    callback();
   }
 ], (error, result) => {
   console.log('Server up and running');
