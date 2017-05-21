@@ -1,6 +1,7 @@
+const router = require('express').Router();
 const Poll = require('../../models/poll');
 
-module.exports.create = (req, res, next) => {
+router.post('/api/poll', (req, res) => {
     let input = req.body;
 
     if (!input) {
@@ -16,15 +17,16 @@ module.exports.create = (req, res, next) => {
 
     createPoll
         .then((result) => {
-            res.json(result);
+            res.status(201);
+            res.json(result[0]._id);
         })
         .catch((err) => {
             res.status(400);
             res.json('failed to create a poll');
         });
-};
+});
 
-module.exports.getLatest = (req, res, next) => {
+router.get('/api/poll', (req, res) => {
     let findPoll = Poll.find()
         .sort({ created: 'desc' })
         .limit(1)
@@ -34,4 +36,6 @@ module.exports.getLatest = (req, res, next) => {
         .then((result) => {
             res.json(result);
         });
-};
+});
+
+module.exports = router;

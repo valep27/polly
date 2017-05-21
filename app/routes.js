@@ -1,10 +1,9 @@
 const router = require('express').Router();
 const pollController = require('./controllers/api/pollController');
 
-router.get('/', (req, res, next) => { res.render('index', { title: 'Express' }); });
+router.get('/', (req, res) => { res.render('index', { title: 'Express' }); });
 
 // api
-router.get('/api/poll', pollController.getLatest);
-router.post('/api/poll', pollController.create);
+router.use(pollController);
 
 module.exports = router;
