@@ -38,4 +38,19 @@ router.get('/api/poll', (req, res) => {
         });
 });
 
+router.get('/api/poll/:pollId', (req, res) => {
+    let id = req.params.pollID;
+
+    let findPoll = Poll.findById(id).exec();
+
+    findPoll.then((result) => {
+        if (result) {
+            res.json(result);
+        } else {
+            res.status(404);
+            res.send();
+        }
+    });
+});
+
 module.exports = router;
