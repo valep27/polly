@@ -25,8 +25,8 @@ router.post('/api/poll', (req, res) => {
 });
 
 router.put('/api/poll/:pollId/vote/:optionId', (req, res) => {
-    let pollId = req.param('pollId');
-    let optionId = req.param('optionId');
+    let pollId = req.params.pollId;
+    let optionId = req.params.optionId;
 
     if (mongoose.Types.ObjectId.isValid(pollId) === false) {
         res.status(400).send('pollId parameter is invalid');
@@ -69,9 +69,9 @@ router.get('/api/poll', (req, res) => {
 });
 
 router.get('/api/poll/:pollId', (req, res) => {
-    let id = req.param('pollId');
+    let id = req.params.pollId;
 
-    if (mongoose.Types.ObjectId.isValid(pollId) === false) {
+    if (mongoose.Types.ObjectId.isValid(id) === false) {
         res.status(400).send('pollId parameter is invalid');
         return;
     }
