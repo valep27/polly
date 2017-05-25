@@ -6,8 +6,7 @@ router.post('/api/poll', (req, res) => {
     let input = req.body;
 
     if (!input) {
-        res.status(400);
-        res.send('must specify a poll to create');
+        res.status(400).send('must specify a poll to create');
         return;
     }
 
@@ -18,12 +17,10 @@ router.post('/api/poll', (req, res) => {
 
     createPoll
         .then(result => {
-            res.status(201);
-            res.json(result[0]._id);
+            res.status(201).json(result[0]._id);
         })
         .catch(err => {
-            res.status(400);
-            res.json('failed to create a poll');
+            res.status(400).json('failed to create a poll');
         });
 });
 
@@ -32,22 +29,19 @@ router.put('/api/poll/:pollId/vote/:optionId', (req, res) => {
     let optionId = req.param('optionId');
 
     if (mongoose.Types.ObjectId.isValid(pollId) === false) {
-        res.status(400);
-        res.send('pollId parameter is invalid');
+        res.status(400).send('pollId parameter is invalid');
         return;
     }
 
     if (mongoose.Types.ObjectId.isValid(optionId) === false) {
-        res.status(400);
-        res.send('optionId parameter is invalid');
+        res.status(400).send('optionId parameter is invalid');
         return;
     }
 
     Poll.findById(pollId).exec()
         .then(poll => {
             if (!poll) {
-                res.status(404);
-                res.send();
+                res.status(404).send();
                 return Promise.resolve();
             }
 
@@ -56,11 +50,9 @@ router.put('/api/poll/:pollId/vote/:optionId', (req, res) => {
 
             return Poll.update({ _id: pollId }, poll);
         }).then(result => {
-            res.status(204);
-            res.send();
+            res.status(204).send();
         }).catch(err => {
-            res.status(400);
-            res.send();
+            res.status(400).send();
         });
 });
 
@@ -80,8 +72,7 @@ router.get('/api/poll/:pollId', (req, res) => {
     let id = req.param('pollId');
 
     if (mongoose.Types.ObjectId.isValid(pollId) === false) {
-        res.status(400);
-        res.send('pollId parameter is invalid');
+        res.status(400).send('pollId parameter is invalid');
         return;
     }
 
@@ -91,8 +82,7 @@ router.get('/api/poll/:pollId', (req, res) => {
         if (result) {
             res.json(result);
         } else {
-            res.status(404);
-            res.send();
+            res.status(404).send();
         }
     });
 });
